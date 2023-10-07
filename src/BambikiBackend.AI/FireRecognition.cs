@@ -8,11 +8,15 @@ namespace BambikiBackend.AI;
 public class FireRecognition : IDisposable
 {
     private readonly InferenceSession _inferenceSession;
-    private readonly ILogger<FireRecognition> _logger;
-    public FireRecognition(ILogger<FireRecognition> logger)
+    public FireRecognition()
     {
-        _logger = logger;
-        _inferenceSession = new InferenceSession(GetONNXModel());
+        var sessionOptions = new SessionOptions()
+        {
+            InterOpNumThreads = 1,
+            IntraOpNumThreads = 1,
+            LogSeverityLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_FATAL,
+        };
+        _inferenceSession = new InferenceSession(GetONNXModel(), sessionOptions);
     }
 
     public byte[] GetONNXModel()
