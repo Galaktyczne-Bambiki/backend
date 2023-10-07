@@ -1,4 +1,4 @@
-namespace BambikiBackend.Api.Models.Ai;
+namespace BambikiBackend.Api.Models.FireReports;
 
 public class FireDetectionModel
 {
