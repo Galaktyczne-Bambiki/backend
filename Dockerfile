@@ -6,6 +6,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["src/BambikiBackend.Api/BambikiBackend.Api.csproj", "src/BambikiBackend.Api/"]
+COPY ["src/BambikiBackend.AI/BambikiBackend.AI.csproj", "src/BambikiBackend.AI/"]
 RUN dotnet restore "src/BambikiBackend.Api/BambikiBackend.Api.csproj"
 COPY . .
 WORKDIR "/src/src/BambikiBackend.Api"
