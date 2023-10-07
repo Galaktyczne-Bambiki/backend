@@ -1,3 +1,4 @@
+using BambikiBackend.AI;
 using Serilog;
 using Serilog.Events;
 using Throw;
@@ -22,6 +23,8 @@ try
         loggingBuilder.AddSerilog(dispose: true);
     });
     // Add services to the container.
+
+    builder.Services.AddSingleton<FireRecognition>();
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
