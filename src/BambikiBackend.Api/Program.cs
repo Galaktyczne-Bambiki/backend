@@ -1,4 +1,6 @@
 using BambikiBackend.AI;
+using BambikiBackend.Api.Utils;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Serilog;
 using Serilog.Events;
 using Throw;
@@ -26,7 +28,10 @@ try
 
     builder.Services.AddSingleton<FireRecognition>();
 
-    builder.Services.AddControllers();
+    builder.Services.AddControllers(opt =>
+    {
+        opt.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
+    });
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
