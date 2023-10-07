@@ -18,6 +18,7 @@ public class FirePointsController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(ICollection<FirePointsModel>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get([FromQuery] AreaCords cords, [FromQuery] DateOnly date, CancellationToken cancellationToken)
     {
         var data = await _areaRestClient.GetAreaData(date, cords, cancellationToken);
