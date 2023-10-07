@@ -16,7 +16,7 @@ public class AiController : ControllerBase
         _fireRecognition = fireRecognition;
     }
 
-    [HttpPost("/detect-fire")]
+    [HttpPost("detect-fire")]
     [ProducesResponseType(typeof(FireDetectionModel), StatusCodes.Status200OK)]
     public async Task<IActionResult> DetectFire(IFormFile file)
     {
