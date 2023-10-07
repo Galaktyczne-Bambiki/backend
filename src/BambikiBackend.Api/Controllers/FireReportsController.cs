@@ -25,4 +25,19 @@ public class FireReportsController : ControllerBase
 
         return Ok();
     }
+
+    [HttpGet("all")]
+    [ProducesResponseType(typeof(ICollection<FireReportModel>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    {
+        var elements = await _reportsService.GetAll(cancellationToken);
+        var result = elements.Select(e => new FireReportModel()
+        {
+            Description = e.Description,
+            Latitude = e.Latitude,
+            Longitude = e.Longitude
+        }).ToList();
+
+        return Ok(result);
+    }
 }

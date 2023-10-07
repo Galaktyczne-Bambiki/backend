@@ -2,6 +2,7 @@ using BambikiBackend.Api.Database;
 using BambikiBackend.Api.Database.Entities;
 using BambikiBackend.Api.Models.FireReports;
 using BambikiBackend.Api.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace BambikiBackend.Api.Services;
 
@@ -34,5 +35,10 @@ public class ReportsService
 
         await _databaseContext.FireReports.AddAsync(entity, cancellationToken);
         await _databaseContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<ICollection<FireReportsEntity>> GetAll(CancellationToken cancellationToken)
+    {
+        return await _databaseContext.FireReports.ToListAsync(cancellationToken);
     }
 }
