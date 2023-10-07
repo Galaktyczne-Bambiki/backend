@@ -3,6 +3,7 @@ using System;
 using BambikiBackend.Api.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BambikiBackend.Api.Database.Migrations
 {
     [DbContext(typeof(BambikiDatabaseContext))]
-    partial class BambikiDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231007222205_AddTempReports")]
+    partial class AddTempReports
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
