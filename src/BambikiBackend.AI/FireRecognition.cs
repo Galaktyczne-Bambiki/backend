@@ -1,5 +1,4 @@
 using System.Reflection;
-using Microsoft.Extensions.Logging;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 
@@ -12,8 +11,6 @@ public class FireRecognition : IDisposable
     {
         var sessionOptions = new SessionOptions()
         {
-            InterOpNumThreads = 1,
-            IntraOpNumThreads = 1,
             LogSeverityLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_FATAL,
         };
         _inferenceSession = new InferenceSession(GetONNXModel(), sessionOptions);
