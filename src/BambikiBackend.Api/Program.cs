@@ -1,6 +1,7 @@
 using System.Reflection;
 using BambikiBackend.AI;
 using BambikiBackend.Api.Database;
+using BambikiBackend.Api.Integrations.Firms;
 using BambikiBackend.Api.Options;
 using BambikiBackend.Api.Services;
 using BambikiBackend.Api.Utils;
@@ -35,6 +36,13 @@ try
         .Bind(builder.Configuration.GetSection("Services:Postgres"))
         .ValidateOnStart();
     builder.Services.AddSingleton<IValidateOptions<PostgresOptions>, PostgresOptionsValidations>();
+
+    builder.Services.AddOptions<FirmsServiceOptions>()
+        .Bind(builder.Configuration.GetSection("Services:FIRMS"))
+        .ValidateOnStart();
+    builder.Services.AddSingleton<IValidateOptions<FirmsServiceOptions>, FirmsServiceOptionsValidation>();
+
+    builder.Services.AddFirmsRestClient();
 
     builder.Services.AddLogging(loggingBuilder =>
     {

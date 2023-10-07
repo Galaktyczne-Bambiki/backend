@@ -3,7 +3,11 @@ using Garager.App.Base.Options;
 
 namespace BambikiBackend.Api.Options;
 
-public record FirmsServiceOptions(Uri Url, string ApiKey);
+public class FirmsServiceOptions
+{
+   public Uri Url { get; init; }
+   public string ApiKey { get; init; }
+}
 
 public class FirmsServiceOptionsValidation : FluentOptionsValidator<FirmsServiceOptions>
 {
