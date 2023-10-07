@@ -70,7 +70,7 @@ public class ReportsService
     {
         return (await _databaseContext.TemperatureReports
             .GroupBy(e => new {e.Latitude, e.Longitude})
-            .Select(e => e.MaxBy(d => d.CelsiusValue))
+            .Select(e => e.OrderByDescending(e => e.CelsiusValue).First())
             .ToListAsync(cancellationToken))!;
     }
 }
