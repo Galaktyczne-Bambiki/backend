@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Threading.RateLimiting;
 using BambikiBackend.AI;
 using BambikiBackend.Api.Database;
 using BambikiBackend.Api.Integrations.Firms;
@@ -7,6 +8,7 @@ using BambikiBackend.Api.Services;
 using BambikiBackend.Api.Utils;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -43,6 +45,18 @@ try
     builder.Services.AddSingleton<IValidateOptions<FirmsServiceOptions>, FirmsServiceOptionsValidation>();
 
     builder.Services.AddFirmsRestClient();
+
+    builder.Services.AddRateLimiter(opt =>
+    {
+        opt.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+        opt.AddFixedWindowLimiter("fixed", options =>
+        {
+            options.PermitLimit = 10;
+            options.Window = TimeSpan.FromSeconds(10);
+            options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+            options.QueueLimit = 5;
+        });
+    });
 
     builder.Services.AddLogging(loggingBuilder =>
     {
@@ -101,6 +115,7 @@ try
     app.UseAuthorization();
 
     app.MapControllers();
+    app.UseRateLimiter();
 
     await using var scope = app.Services.CreateAsyncScope();
     await scope.ServiceProvider.GetRequiredService<BambikiDatabaseContext>().Database.MigrateAsync();

@@ -1,3 +1,4 @@
+using BambikiBackend.Api.Controllers.Models.TemperatureReports;
 using BambikiBackend.Api.Database;
 using BambikiBackend.Api.Database.Entities;
 using BambikiBackend.Api.Models.FireReports;
@@ -15,7 +16,7 @@ public class ReportsService
         _databaseContext = databaseContext;
     }
 
-    public async Task AddReport(FireReportRequestModel model, CancellationToken cancellationToken)
+    public async Task AddFireReportAsync(FireReportRequestModel model, CancellationToken cancellationToken)
     {
         var entity = new FireReportsEntity()
         {
@@ -37,16 +38,39 @@ public class ReportsService
         await _databaseContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<ICollection<FireReportsEntity>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<ICollection<FireReportsEntity>> GetAllFireReportsAsync(CancellationToken cancellationToken)
     {
         return await _databaseContext.FireReports
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<byte[]> GetImageAsync(long reportId, CancellationToken cancellationToken)
+    public async Task<byte[]> GetFireReportImageAsync(long reportId, CancellationToken cancellationToken)
     {
         var entity = await _databaseContext.FireReports.FindAsync(new object?[] { reportId }, cancellationToken);
 
         return entity.Image;
+    }
+
+    public async Task AddTemperatureReportAsync(TemperatureReport report, CancellationToken cancellationToken)
+    {
+        var entity = new TemperatureReportsEntity()
+        {
+            Latitude = report.Latitude,
+            Longitude = report.Longitude,
+            Date = DateTimeOffset.Now,
+            CelsiusValue = report.CelsiusValue,
+        };
+
+        await _databaseContext.TemperatureReports.AddAsync(entity, cancellationToken);
+        await _databaseContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<ICollection<TemperatureReportsEntity>> GetAllMaxTemperatureReportsAsync(DateOnly date,
+        CancellationToken cancellationToken)
+    {
+        return (await _databaseContext.TemperatureReports
+            .GroupBy(e => new {e.Latitude, e.Longitude})
+            .Select(e => e.MaxBy(d => d.CelsiusValue))
+            .ToListAsync(cancellationToken))!;
     }
 }

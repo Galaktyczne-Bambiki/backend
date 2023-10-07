@@ -11,4 +11,5 @@ public class BambikiDatabaseContext : DbContext
     }
 
     public DbSet<FireReportsEntity> FireReports { get; set; }
+    public DbSet<TemperatureReportsEntity> TemperatureReports { get; set; }
 }

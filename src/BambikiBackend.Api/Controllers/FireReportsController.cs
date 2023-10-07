@@ -21,7 +21,7 @@ public class FireReportsController : ControllerBase
     [ProducesResponseType( StatusCodes.Status200OK)]
     public async Task<IActionResult> AddReport([FromForm] FireReportRequestModel report, CancellationToken cancellationToken)
     {
-        await _reportsService.AddReport(report, cancellationToken);
+        await _reportsService.AddFireReportAsync(report, cancellationToken);
 
         return Ok();
     }
@@ -30,7 +30,7 @@ public class FireReportsController : ControllerBase
     [ProducesResponseType(typeof(ICollection<FireReportModel>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        var elements = await _reportsService.GetAllAsync(cancellationToken);
+        var elements = await _reportsService.GetAllFireReportsAsync(cancellationToken);
         var result = elements.Select(e => new FireReportModel()
         {
             FireReportId = e.FireReportId,
@@ -46,7 +46,7 @@ public class FireReportsController : ControllerBase
     [ProducesResponseType(typeof(FileStreamResult), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetReportImage([FromRoute] long id, CancellationToken cancellationToken)
     {
-        var image = await _reportsService.GetImageAsync(id, cancellationToken);
+        var image = await _reportsService.GetFireReportImageAsync(id, cancellationToken);
         return File(new MemoryStream(image), "application/octet-stream");
     }
 }
