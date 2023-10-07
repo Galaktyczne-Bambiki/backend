@@ -19,6 +19,9 @@ public class AiController : ControllerBase
     {
         var result = await _fireRecognition.HasFireOnImage(file.OpenReadStream());
 
-        return result ? Ok() : BadRequest();
+        return Ok(new
+        {
+            fireIsDetected = result
+        });
     }
 }

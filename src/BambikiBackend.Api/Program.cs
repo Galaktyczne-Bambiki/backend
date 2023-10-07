@@ -34,6 +34,12 @@ try
     var app = builder.Build();
     app.UseSerilogRequestLogging();
 
+    app.UseCors(b =>
+    {
+        b.AllowAnyOrigin();
+        b.AllowAnyHeader();
+    });
+
     // Configure the HTTP request pipeline.
     app.UseSwagger();
     app.UseSwaggerUI();

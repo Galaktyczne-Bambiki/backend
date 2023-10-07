@@ -69,7 +69,7 @@ public class FireRecognition : IDisposable
         if (Math.Abs(result[1]) > Math.Abs(result[0]))
             return true;
 
-        throw new Exception("asdasf");
+        throw new Exception("Undetected result.");
     }
     public void Dispose()
     {
