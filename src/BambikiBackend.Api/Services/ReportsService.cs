@@ -37,8 +37,16 @@ public class ReportsService
         await _databaseContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<ICollection<FireReportsEntity>> GetAll(CancellationToken cancellationToken)
+    public async Task<ICollection<FireReportsEntity>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _databaseContext.FireReports.ToListAsync(cancellationToken);
+        return await _databaseContext.FireReports
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<byte[]> GetImageAsync(long reportId, CancellationToken cancellationToken)
+    {
+        var entity = await _databaseContext.FireReports.FindAsync(new object?[] { reportId }, cancellationToken);
+
+        return entity.Image;
     }
 }
